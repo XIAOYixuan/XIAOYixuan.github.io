@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Guidance of Study and Exam Prep</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/main//css/tufte.css">
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not--><link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'><!-- Load up MathJax script if needed ... specify in /_data/options.yml file--><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_CHTML"></script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/main//teaching/2024_current_topics_in_speech_tech/tts/">
+  <link rel="alternate" type="application/rss+xml" title="Yixuan Xiao's Personal Website" href="http://localhost:4000/main//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+    <a href="/main//">Bio</a>
+    <a href="/main//teaching/">Teaching</a>
+    <a href="/main//notes/">Random Notes</a>
+    </nav>
+</header>
+
+    <article class="group">
+      <h1>Guidance of Study and Exam Prep</h1>
+<p class="subtitle"></p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        E: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Re: "{\\mathbb{R}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>TTS is relatively complex course. Similar to ASR, it’s a task that has many sub-tasks, which are often interconnected rather than independent. Also, it’s not a classification task you might have seen many times before, but a one-to-many generation task. As a result, in prepareing this course, I believe you might have encountered the following challenges, and I tried to based on them to adjust the content. I guessed understanding the motivation of slides design might be helpful to understand the content, so I put it as follow.
+<label for="note-pre" class="margin-toggle sidenote-number"></label><input type="checkbox" id="note-pre" class="margin-toggle" /><span class="sidenote">since I’m not very familiar with curricula outside of IMS, I’m considering challenges mainly from the perspective of the IMS students.</span></p>
+
+<p><strong>Generative Models</strong></p>
+
+<p>The intro to deep learning course at the IMS doesn’t cover much on generative models, but in the advanced deep learning course, there’s a topic on this. Considering that 1) advanced DL is not a prerequisite 2) generative models are wildly used in current TTS systems 3) students choosing the TTS topic might need to read papers that base their models on generative models, I think it’s important to introduce these model types in more details.</p>
+
+<p><strong>Maths</strong></p>
+
+<p>Generative models are probabilistic models; they model uncertainty of prediction rather than deterministic values. So understanding these models makes it hard to completely avoid topics in probability, statistics, linear algebra, and calculus. Among the four models we cover, except for GANs, the other three aim for rigorous estimation of the marginal likelihood. I’m aware that some students might lack of math backgrounds, so initially, I tried to prepare slides without touching on math, but I found that, apart from broadly stating the main ideas, it was diffficult to causally relate various concepts. If I present it in this way, you’ll be forced to memorize concepts, like knowing that the objective of a VAE is ELBO or that NFs use many invertible functions. But why using ELBO models the marginal likelihood or why these functions must be invertible become confusing. Therefore, I decided to include some maths in the end.</p>
+
+<p>If you want to better understand these concepts and build a solid foundation in DL, I recommend reading all the slides and exploring the external materials or links provided. However, I understand that for students who don’t have math training during their undergraduate studies, fully understanding the concepts would require a significant workload. So, if you just want to pass the exam, the slides marked as an aside won’t be asked, and the derivations won’t be examined either. Even for the formulas; if an objective is asked, you only need to intuitively explain what terms the formula has, and the motivation behind designing each term to get points.</p>
+
+<p>Of course, if you can logically write down the full formula during the exam without lengthy explanations, you’ll aslo get points and answer more quickly! Or you can try to write it down entirely based on memorization, but you’ll find that less efficient than understanding the intuition. If you memorize and misplace a subscript, the entire meaning of the formula could change, leading to lost points.</p>
+
+<p><strong>Speech</strong></p>
+
+<p>Speech has its unique characteristics, different from images and text. If you lack sufficient understanding of speech and signal processing, you might feel confused when trying to grasp certain model arch designs, now knowing why they’re designed that way. If you do understand the propertie of speech, some designs will seem natural, and you won’t need to memorize them explicitly. You’ll think, “ah sure, that’s the way to do it, of course” For example, why does MelGAN use window-based methods 
+<label for="note-meldgan" class="margin-toggle sidenote-number"></label><input type="checkbox" id="note-meldgan" class="margin-toggle" /><span class="sidenote">cuz sliding windows are common in speech processing</span>
+, or why does HiFiGAN need to handle periodicity 
+<label for="note-hifigan" class="margin-toggle sidenote-number"></label><input type="checkbox" id="note-hifigan" class="margin-toggle" /><span class="sidenote">speech signal can be decomposed into sinosidual waves with different periods/frequencies, and the freq humans can produce are limited</span>
+. Without knowing this, you might find them odd at first. I tried to include the speech properties when introducing these concepts, but as mentioned in the introduction, having a foundational knowledge of speech processing is important for this course.</p>
+
+<p>Of course, if you just need enough credits to graduate, and aren’t interested in speech itself, you’ll still be able to pass the exam. Just need more effort to memorize and learn the design. However, if you’re interested in speech technology, learning about phonetics, phonology, and signal processing is crucial 
+<label for="note-speech" class="margin-toggle sidenote-number"></label><input type="checkbox" id="note-speech" class="margin-toggle" /><span class="sidenote">the other linguistics is also important for speech understanding tasks, but I assume you already know enough from the Method class or other NLP tasks</span>
+. So it’s worth to check the materials uploaded by Sarina in the <strong>Additional Resources folder.</strong></p>
+
+<p>Below are my notes from preparing the TTS part. They’re much more concise than the slides and mainly highlight the concepts I consider important 
+<label for="note-exam" class="margin-toggle sidenote-number"></label><input type="checkbox" id="note-exam" class="margin-toggle" /><span class="sidenote">meaning they will be examined :D</span>
+. You can use these notes to prepare for the exam. All bullet points marked as <em>advanced</em> are optional. Some of these optional ones were eventually removed from the final slides, but the non-advanced parts should be fully covered. If you learn all the concepts including the advanced ones, you’ll have a better grasp of the content and better prepared for the project seminar. Skipping them won’t affect your exam score 
+<label for="note-skip" class="margin-toggle sidenote-number"></label><input type="checkbox" id="note-skip" class="margin-toggle" /><span class="sidenote">but you’ll eventually need them to understand the papers during the project seminar</span>
+. Simply put, you’re not required to understand every single detail of the slides to pass the exam.  Enjoy!</p>
+
+<p>Here’s the original notion <a href="https://tomato-bit.notion.site/CTiST-2024WS-TTS-Notes-12ff7ec8709880e19ef9d74fa249c279?pvs=4">link</a></p>
+
+<h1 id="overview">Overview:</h1>
+
+<ul>
+  <li>different speech synthesis techniques
+    <ul>
+      <li>compare tts and other</li>
+      <li>tts challenges</li>
+    </ul>
+  </li>
+  <li>classical tts components</li>
+  <li>end-to-end tts</li>
+</ul>
+
+<h1 id="classicial-tts-overview">Classicial TTS Overview</h1>
+
+<ul>
+  <li>Text Analysis, Acoustic models, vocoder</li>
+  <li>Introduce the input and output, the motivation, the model types</li>
+</ul>
+
+<h1 id="text-analysis">Text Analysis</h1>
+
+<ul>
+  <li>normalization
+    <ul>
+      <li>preprocessing: motivation of preprocessing - NSWs, how to handle NSWs 
+  <label for="note-preprocessing" class="margin-toggle sidenote-number"></label><input type="checkbox" id="note-preprocessing" class="margin-toggle" /><span class="sidenote">example solution: rule-based, neural models</span></li>
+      <li>tokenization: motivation <label for="note-tokenization" class="margin-toggle sidenote-number"></label><input type="checkbox" id="note-tokenization" class="margin-toggle" /><span class="sidenote">as inputs, ease the other operations</span> and methods <label for="note-tokenization-methods" class="margin-toggle sidenote-number"></label><input type="checkbox" id="note-tokenization-methods" class="margin-toggle" /><span class="sidenote">rule-based, neural models, statistics-based methods</span></li>
+      <li>end of sentence: why do we need this</li>
+    </ul>
+  </li>
+  <li>phonetic analysis (G2P)
+    <ul>
+      <li>motivation (use an example to illustrate), the goal of G2P</li>
+      <li>rule-based solution → two issues</li>
+      <li>WFST → use less storage</li>
+      <li>neural models → handle oov</li>
+    </ul>
+  </li>
+  <li>prosodic analysis
+    <ul>
+      <li>prosody: what are they, example, fine-grained prosodic features and high-level features</li>
+      <li>how to extract prosodic features: signal processing tools, two example application 
+  <label for="note-prosodic-features" class="margin-toggle sidenote-number"></label><input type="checkbox" id="note-prosodic-features" class="margin-toggle" /><span class="sidenote">how they’re used in training, how they’re used in dataset construction</span></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="acoustic-models">Acoustic Models</h1>
+
+<ul>
+  <li>input and output</li>
+  <li>the probabilistic view of acoustic modelling, the difference between ASR and TTS’s acoustic modelling</li>
+</ul>
+
+<h2 id="basic-dnn-synthesis">Basic DNN synthesis</h2>
+
+<ul>
+  <li>input and output representation (vectorized i/o)</li>
+  <li>alignment problem
+    <ul>
+      <li>a naive solution: simple upsampling → problems,  so we can intor duration model</li>
+      <li>why do we need the duration model, how to train this model → so we can move on to forced alignment</li>
+      <li>forced alignment
+        <ul>
+          <li>HMM-GMM ASR acoustic model + searching algorithm</li>
+          <li>weakness → prepare for the attention mechanism and duration prediction</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>weakness of DNN model</li>
+</ul>
+
+<h2 id="rnn-tacotron">RNN, Tacotron</h2>
+
+<ul>
+  <li>overview of the structure, input/output, reconstruction algorithm</li>
+  <li>intro AutoRegressive (AR)</li>
+  <li>important designs
+    <ul>
+      <li>encoder-attention-decoder architecture</li>
+      <li>encoder
+        <ul>
+          <li>k-gram modeling in CBHG blocks</li>
+          <li>contextualized representation using RNN</li>
+        </ul>
+      </li>
+      <li>attention mechanism to handle the alignment problem
+        <ul>
+          <li>bottleneck in prenet to make it easy to do attention</li>
+        </ul>
+      </li>
+      <li>decoder
+        <ul>
+          <li>multiple spectrogram prediction</li>
+          <li>stop-flag</li>
+          <li>post-processing net to smoothes the output</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>others, tacotron 2
+    <ul>
+      <li>simplifed building blocks</li>
+      <li>advanced vocoder rather than griffin-lim</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="transformer-fastspeech">Transformer, FastSpeech</h2>
+
+<ul>
+  <li>motivation, input, output</li>
+  <li>intro non-autoregress (NAR)</li>
+</ul>
+
+<p>FastSpeech: important designs</p>
+
+<ul>
+  <li>length regulator to handle the alignment problem
+    <ul>
+      <li>duration prediction: how to find ground truth labels</li>
+    </ul>
+  </li>
+</ul>
+
+<p>FastSpeech2: important design</p>
+
+<ul>
+  <li>motivation, mode-collapse</li>
+  <li>variance adaptor <label for="note-variance-adaptor" class="margin-toggle sidenote-number"></label><input type="checkbox" id="note-variance-adaptor" class="margin-toggle" /><span class="sidenote">introduce each prosodic feature, ground truth labels, training objectives</span>
+    <ul>
+      <li>duration predictor: no need to do stop-flag</li>
+      <li>pitch predictor</li>
+      <li>energy predictor</li>
+    </ul>
+  </li>
+  <li>weakness</li>
+</ul>
+
+<h2 id="generative-models">Generative Models</h2>
+
+<ul>
+  <li>the goal, a probabilistic view</li>
+  <li>motivation</li>
+  <li>intro 4 types</li>
+</ul>
+
+<h3 id="gan">GAN</h3>
+
+<p>likelihood-free methods, iterative training</p>
+
+<ul>
+  <li>main architecture and probabilistic graph representation</li>
+  <li>explain model: minmax game</li>
+  <li>objectives of G and D
+    <ul>
+      <li>intro the spectial training algorithms</li>
+    </ul>
+  </li>
+  <li>how to condition GAN on text for TTS
+    <ul>
+      <li>find an example</li>
+      <li>intro why GAN is more common in vocoder but not in acoustic model</li>
+    </ul>
+  </li>
+  <li>(advanced study materials) the probabilistic view of its objective, important when we need to  make comparison to other models</li>
+</ul>
+
+<h3 id="vae">VAE</h3>
+
+<p>variation inference, can only approximate actual marginal likelihood</p>
+
+<ul>
+  <li>main architecture, and probabilistic graph representation</li>
+  <li>the intuition <label for="note-vae-intuition" class="margin-toggle sidenote-number"></label><input type="checkbox" id="note-vae-intuition" class="margin-toggle" /><span class="sidenote">is related to disenglement</span>
+    <ul>
+      <li>it introduce z, and tries to model \(p(z \vert x)\)
+        <ul>
+          <li>\(p(x \vert z)\) is needed for estimation due to bayes rule</li>
+        </ul>
+      </li>
+      <li>resolve the possible conflicts: I said generative models model \(p(x)\), now it seems that we want to model \(p(z \vert x)\)</li>
+    </ul>
+  </li>
+  <li>model comparison
+    <ul>
+      <li>further emphasize disenglement, and the weakness of this assumption</li>
+      <li>likelihood-free and MLE</li>
+    </ul>
+  </li>
+  <li>model explain
+    <ul>
+      <li>VAE Encoder and decoder, what they try to model</li>
+    </ul>
+  </li>
+  <li>objective: ELBO
+    <ul>
+      <li>problem, intractability</li>
+      <li>(advanced) the essense, we have ELBO because it’s variation inference, for variational inference we need Gaussian to do approximation <label for="note-vae-gaussian" class="margin-toggle sidenote-number"></label><input type="checkbox" id="note-vae-gaussian" class="margin-toggle" /><span class="sidenote">the Gaussian distribution can handle one-to-many problems</span></li>
+      <li>(advanced) resolve the conflicts, we claimed we can use MLE to update VAE, why do we use ELBO, show that maximize ELBO is equivalent to MLE</li>
+      <li>explain the two main term of ELBO: reconstruction and regularization terms</li>
+    </ul>
+  </li>
+  <li>find an example that show how VAE can be used in TTS, and it utlize VAE’s feature disenglement property</li>
+  <li>a lot of content, add a recap to end this seciton</li>
+</ul>
+
+<h3 id="nf">NF</h3>
+
+<p>exact likelihood representation, MLE, but limit in model selection</p>
+
+<ul>
+  <li>architecture and probabilistic graph representation</li>
+  <li>motivation: VAE is approximation, NF can do exact likelihood estimation
+    <ul>
+      <li>so we need simple transformation</li>
+      <li>we need a series of simple transformation to model the actual complex distribution</li>
+      <li>we need two directions</li>
+      <li>(advanced) explain why we need two direction → bayes rule, bijective models</li>
+    </ul>
+  </li>
+  <li>model comparision
+    <ul>
+      <li>VAE: just approximation, because given \(p(x \vert z)\), intractable to solve \(p(z \vert x)\)</li>
+      <li>NF solve this problem by using invertible functions
+        <ul>
+          <li>(advanced) explain why using this specific funciton can solve the problem</li>
+          <li>because of these functions, we have normalized density, that’s why it’s called Normalized</li>
+          <li>because the capacity of these function is limited, we need a series of them to approx complex distribution, that’s why it’s called Flows</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>(advanced) explain the determinant form from a geometric perspective</li>
+  <li>a classic example of conditioning NF on text for TTS application: Glow-TTS</li>
+  <li>weakness of NFs → also the motivation of the next model DDPM</li>
+</ul>
+
+<h3 id="ddpm">DDPM</h3>
+
+<p>approximation + markov assumption for sequence modeling, also use ELBO, but wilder model selection range</p>
+
+<ul>
+  <li>pipeline and the probabilistic graph representation</li>
+  <li>intuition of denoising and diffusion</li>
+  <li>method explain
+    <ul>
+      <li>diffusion, how to add noise and the markov assumption</li>
+      <li>denoising, how to reduce noise, supposed to model the distribution that’s used to add noise, but in practice, just model the noise also work; also the markov assumption</li>
+    </ul>
+  </li>
+  <li>model comparison
+    <ul>
+      <li>NF, how many models they need</li>
+    </ul>
+  </li>
+  <li>classic example, TTS, how to condition on text</li>
+</ul>
+
+<h1 id="vocoder">Vocoder</h1>
+
+<ul>
+  <li>motivation
+    <ul>
+      <li>if STFT is lossless compression, why can’t we go fro spectrogram to wave</li>
+      <li>phase reconstruction problem</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="wavenet">WaveNet</h2>
+
+<p>CNN-based, autoregressive</p>
+
+<ul>
+  <li>resolve the conflicts: CNN takes future content as input, but AR doesn’t allow using future info → so we can jump to the next topic, stacked dilated causal conv</li>
+  <li>main module:
+    <ul>
+      <li>stacked dilated causal conv (SDCV)</li>
+      <li>gated activation units</li>
+    </ul>
+  </li>
+  <li>model explain:
+    <ul>
+      <li>input, represent by SDCV</li>
+      <li>output:
+        <ul>
+          <li>naive solution, regressive the amplitude → but regression is hard due to the continuous nature</li>
+          <li>actual solution, classification task → need quantization
+            <ul>
+              <li>(advanced) explain why miu-law makes sense for speech processing</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>main mo</li>
+    </ul>
+  </li>
+  <li>wavenet is an AR model, so it can produce speech by conditioning on itself, then how to condition on spectrogram
+    <ul>
+      <li>global condition</li>
+      <li>local condition</li>
+    </ul>
+  </li>
+  <li>weakness → also the motivation of our next model</li>
+</ul>
+
+<h2 id="gan-based-vocder">GAN-based Vocder</h2>
+
+<p>introduce three important ones, MelGAN, HiFiGAN, Avocode and their important discriminator’s  designs. These design are inspired by audio signal properties</p>
+
+<ul>
+  <li>MelGAN: MSD, window-based objective</li>
+  <li>HiFiGAN: MPD</li>
+  <li>Avocodo: artefacts in differnt feature-banks, intermediate results</li>
+</ul>
+
+<h1 id="end-to-end-tts">End-to-end TTS</h1>
+
+<ul>
+  <li>one-stage vs two-stage training</li>
+  <li>a bit boring, maybe find one example to show the main pipeline
+    <ul>
+      <li>sota: naturalspeech</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="dataset--and-metrics">Dataset  and Metrics</h1>
+
+<p>just use florian’s original slides</p>
+
+
+    </article>
+    <footer>
+<hr class="slender">
+<div class="credits">
+Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>. &copy; 2025
+</div>
+</footer>
+
+  </body>
+</html>
