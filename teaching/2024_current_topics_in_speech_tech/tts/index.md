@@ -33,8 +33,6 @@ Below are my notes from preparing the TTS part. They’re much more concise than
 {% include sidenote.html id="note-skip" note="but you’ll eventually need them to understand the papers during the project seminar" %}
 . Simply put, you’re not required to understand every single detail of the slides to pass the exam.  Enjoy!
 
-Here's the original notion [link](https://tomato-bit.notion.site/CTiST-2024WS-TTS-Notes-12ff7ec8709880e19ef9d74fa249c279?pvs=4)
-
 # Overview:
 
 - different speech synthesis techniques
