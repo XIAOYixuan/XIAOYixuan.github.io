@@ -50,4 +50,4 @@ If you would like to do a thesis with me, to help me assess whether a topic migh
 
 ### HiWi Position
 
-Currently, all positions are filled (three HiWi contracts). If new openings become available, I'll post updates here.
+Currently, all positions are filled for 2025WS (three HiWi contracts). If new openings become available, I'll post updates here.
